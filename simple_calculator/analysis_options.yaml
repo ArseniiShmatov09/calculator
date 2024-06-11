@@ -1,0 +1,13 @@
+
+include: package:lint/strict.yaml 
+
+analyzer:
+  strong-mode:
+    implicit-casts: false
+    implicit-dynamic: false
+    
+linter:
+  rules:
+   prefer_const_declarations: true
+   use_key_in_widget_constructors: true
+
