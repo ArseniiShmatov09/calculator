@@ -6,17 +6,19 @@ class FifthRowOfButtons extends StatelessWidget {
     super.key,
     required this.numberButtonStyle,
     required this.numberTextStyle,
+    required this.enterNumber,
   });
 
   final ButtonStyle numberButtonStyle;
   final TextStyle numberTextStyle;
+  final Function(String) enterNumber;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         ElevatedButton(
-          onPressed: ()=>{}, 
+          onPressed: () => enterNumber("0"), 
           style: numberButtonStyle, 
           child: Text(
             "0", 
@@ -25,7 +27,7 @@ class FifthRowOfButtons extends StatelessWidget {
         ),
         const SizedBox(width: 20,),
         ElevatedButton(
-          onPressed: ()=>{},
+          onPressed: () => enterNumber("."), 
           style: numberButtonStyle, 
           child: Text(
             ".", 
@@ -61,13 +63,16 @@ class FifthRowOfButtons extends StatelessWidget {
 }
 
 class FourthRowOfButtons extends StatelessWidget {
+  
   const FourthRowOfButtons({
     super.key,
     required this.numberButtonStyle,
     required this.numberTextStyle,
     required this.operationsTextStyle,
+    required this.enterNumber,
   });
-
+  
+  final Function(String) enterNumber;
   final ButtonStyle numberButtonStyle;
   final TextStyle numberTextStyle;
   final TextStyle operationsTextStyle;
@@ -78,7 +83,7 @@ class FourthRowOfButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         ElevatedButton(
-          onPressed: ()=>{}, 
+          onPressed: () => enterNumber("1"), 
           style: numberButtonStyle, 
           child: Text(
             "1", 
@@ -86,7 +91,7 @@ class FourthRowOfButtons extends StatelessWidget {
           ),
         ),
         ElevatedButton(
-          onPressed: ()=>{}, 
+          onPressed: () => enterNumber("2"), 
           style: numberButtonStyle, 
           child: Text(
             "2", 
@@ -94,7 +99,7 @@ class FourthRowOfButtons extends StatelessWidget {
           ),
         ),
         ElevatedButton(
-          onPressed: ()=>{}, 
+          onPressed: () => enterNumber("3"), 
           style: numberButtonStyle, 
           child: Text(
             "3", 
@@ -120,11 +125,13 @@ class ThirdRowOfButtons extends StatelessWidget {
     required this.numberButtonStyle,
     required this.numberTextStyle,
     required this.operationsTextStyle,
+    required this.enterNumber,
   });
 
   final ButtonStyle numberButtonStyle;
   final TextStyle numberTextStyle;
   final TextStyle operationsTextStyle;
+  final Function(String) enterNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -132,22 +139,22 @@ class ThirdRowOfButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         ElevatedButton(
-          onPressed: ()=>{}, 
+          onPressed: () => enterNumber("4"), 
           style: numberButtonStyle, 
-          child: Text("4",
+          child: Text(
+            "4",
             style: numberTextStyle,
           ),
         ),
         ElevatedButton(
-          onPressed: ()=>{}, 
-          style: numberButtonStyle, 
+          onPressed: () => enterNumber("5"),           style: numberButtonStyle, 
           child: Text(
             "5", 
             style: numberTextStyle,
           ),
         ),
         ElevatedButton(
-          onPressed: ()=>{}, 
+          onPressed: () => enterNumber("6"), 
           style: numberButtonStyle, 
           child: Text(
             "6", 
@@ -173,11 +180,13 @@ class SecondRowOfButtons extends StatelessWidget {
     required this.numberButtonStyle,
     required this.numberTextStyle,
     required this.operationsTextStyle,
+    required this.enterNumber,
   });
 
   final ButtonStyle numberButtonStyle;
   final TextStyle numberTextStyle;
   final TextStyle operationsTextStyle;
+  final Function(String) enterNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -185,7 +194,7 @@ class SecondRowOfButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         ElevatedButton(
-          onPressed: ()=>{}, 
+          onPressed: () => enterNumber("7"), 
           style: numberButtonStyle, 
           child: Text(
             "7", 
@@ -193,7 +202,7 @@ class SecondRowOfButtons extends StatelessWidget {
           ),
         ),
         ElevatedButton(
-          onPressed: ()=>{}, 
+          onPressed: () => enterNumber("8"), 
           style: numberButtonStyle, 
           child: Text(
             "8", 
@@ -201,7 +210,7 @@ class SecondRowOfButtons extends StatelessWidget {
             ),
           ),
         ElevatedButton(
-          onPressed: ()=>{}, 
+          onPressed: () => enterNumber("9"), 
           style: numberButtonStyle, 
           child: Text(
             "9", 
@@ -223,11 +232,17 @@ class SecondRowOfButtons extends StatelessWidget {
 class FirstRowOfButtons extends StatelessWidget {
   const FirstRowOfButtons({
     super.key,
+    required this.percentResult,
+    required this.changeSign,
+    required this.clearInput,
     required this.numberButtonStyle,
     required this.numberTextStyle,
     required this.operationsTextStyle,
   });
 
+  final Function() percentResult;
+  final Function() changeSign;
+  final Function() clearInput;
   final ButtonStyle numberButtonStyle;
   final TextStyle numberTextStyle;
   final TextStyle operationsTextStyle;
@@ -238,7 +253,7 @@ class FirstRowOfButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         ElevatedButton(
-          onPressed: ()=>{}, 
+          onPressed: clearInput, 
           style: ButtonStyle(
             shape: MaterialStateProperty.all(
               const RoundedRectangleBorder(
@@ -256,7 +271,7 @@ class FirstRowOfButtons extends StatelessWidget {
           ),
         ),
         ElevatedButton(
-          onPressed: ()=>{}, 
+          onPressed: changeSign, 
           style: numberButtonStyle, 
           child: Text(
             "+/-", 
@@ -264,7 +279,7 @@ class FirstRowOfButtons extends StatelessWidget {
           ),
         ),
         ElevatedButton(
-          onPressed: ()=>{}, 
+          onPressed: percentResult, 
           style: numberButtonStyle, 
           child: Text(
             "%", 
