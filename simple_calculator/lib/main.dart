@@ -33,49 +33,111 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
 
   String inputDigit = '0';
+  String inputResult = '0';
   String resultValue = '0';
+  List<double> values = [];
+  List<String> operations = [];
+  double? firstValue;
+  double? secondValue;
+  String? operation;
 
   void enterNumber(String enteredDigit) {
     setState(() {
-      if(inputDigit == '0' && enteredDigit != '.'){
-        inputDigit = inputDigit.substring(1);
-      }
-      if((inputDigit.contains('.') && enteredDigit == '.') || inputDigit.length == 12){
-        inputDigit += '';
-      }
-      else {
+      if (inputDigit == '0' && enteredDigit != '.') {
+        inputDigit = enteredDigit;
+        inputResult = inputDigit;
+      } else if ((inputDigit.contains('.') && enteredDigit == '.') || inputDigit.length == 12) {
+      } else {
         inputDigit += enteredDigit;
+        inputResult = inputDigit;
       }
     });
   }
 
-  void clearInput() {
+ 
+void setOperation(String newOperation) {
     setState(() {
+      if (inputDigit.isNotEmpty) {
+        values.add(double.parse(inputDigit));
+        operations.add(newOperation);
+        inputDigit = '0';
+      } else if (operations.isNotEmpty) {
+        operations[operations.length - 1] = newOperation;
+      }
+    });
+  }
+
+  void calculateResult() {
+    setState(() {
+      
+      if (inputDigit.isNotEmpty) {
+        values.add(double.parse(inputDigit));
+      }
+
+      if (values.length == operations.length + 1) {
+        for (int i = 0; i < operations.length; i++) {
+          if (operations[i] == '*' || operations[i] == '/') {
+            double tempResult;
+            if (operations[i] == '*') {
+              tempResult = values[i] * values[i + 1];
+            } else {
+              if (values[i + 1] == 0) {
+                resultValue = 'Error';
+                return;
+              }
+              tempResult = values[i] / values[i + 1];
+            }
+            values[i] = tempResult;
+            values.removeAt(i + 1);
+            operations.removeAt(i);
+            i--;
+          }
+        }
+
+        double finalResult = values[0];
+        for (int i = 0; i < operations.length; i++) {
+          if (operations[i] == '+') {
+            finalResult += values[i + 1];
+          } else if (operations[i] == '-') {
+            finalResult -= values[i + 1];
+          }
+        }
+
+        resultValue = finalResult.toString();
+        inputDigit = resultValue;
+        values.clear();
+        operations.clear();
+      }
+    });
+  }
+
+  void percentOperation() {
+    setState(() {
+      final double value = double.tryParse(inputResult)!;
+      resultValue = (value / 100).toString();
+    });
+  }
+
+   void clearInput() {
+    setState(() {
+      inputResult = '0';
       inputDigit = '0';
+      resultValue = '0';
+      firstValue = null;
+      operation = null;
     });
   }
 
   void changeSign() {
     setState(() {
-     
-      if(inputDigit != '0'){ 
-        if(double.tryParse(inputDigit)! > 0){
+      if (inputDigit != '0') {
+        if (inputDigit.startsWith('-')) {
+          inputDigit = inputDigit.substring(1);
+        } else {
           inputDigit = '-$inputDigit';
         }
-        else{
-          inputDigit = inputDigit.substring(1);
-        }
+        inputResult = inputDigit;
       }
-    });
-  }
-  
-  void percentResult() {
-    setState(() {
-      if (inputDigit == '0'){
-        resultValue = '0';
-      }
-      resultValue = (double.tryParse(inputDigit)! / 100).toString();
-      inputDigit = resultValue;
     });
   }
 
@@ -91,7 +153,7 @@ class _MainScreenState extends State<MainScreen> {
               Container(
                 padding: const EdgeInsets.fromLTRB(0, 40, 19, 0),
                 alignment: Alignment.bottomRight,
-                child: InputFieldValue(value: inputDigit),
+                child: InputFieldValue(value: inputResult),
               ),
               Container(
                 padding: const EdgeInsets.fromLTRB(0, 70, 19, 50),
@@ -123,7 +185,9 @@ class _MainScreenState extends State<MainScreen> {
             enterNumber: enterNumber, 
             clearInput: clearInput, 
             changeSign: changeSign,
-            percentResult: percentResult,
+            percentOperation: percentOperation,
+            setOperation: setOperation,
+            calculateResult: calculateResult,
           ),
         ],
       ),
@@ -158,16 +222,18 @@ class CalculatorButtons extends StatelessWidget {
   final Function(String) enterNumber;
   final Function() clearInput;
   final Function() changeSign;
-  final Function() percentResult;
-  
+  final Function() percentOperation;
+  final Function() calculateResult;
+  final Function(String) setOperation;
   
   
   CalculatorButtons({
     required this.clearInput,
     required this.enterNumber, 
     required this.changeSign,
-    required this.percentResult,
-    
+    required this.percentOperation,
+    required this.calculateResult,
+    required this.setOperation,
     super.key,
   });
 
@@ -205,12 +271,13 @@ class CalculatorButtons extends StatelessWidget {
         child: Column(
           children: [
             FirstRowOfButtons(
-              percentResult: percentResult,
+              percentOperation: percentOperation,
               changeSign: changeSign,
               clearInput: clearInput,
               numberButtonStyle: numberButtonStyle, 
               numberTextStyle: numberTextStyle, 
               operationsTextStyle: operationsTextStyle,
+              setOperation: setOperation,
             ),
             const SizedBox(height: 20,),
             SecondRowOfButtons(
@@ -218,9 +285,11 @@ class CalculatorButtons extends StatelessWidget {
               numberButtonStyle: numberButtonStyle, 
               numberTextStyle: numberTextStyle, 
               operationsTextStyle: operationsTextStyle,
+              setOperation: setOperation,
             ),
             const SizedBox(height: 20,),
             ThirdRowOfButtons(
+              setOperation: setOperation,
               enterNumber: enterNumber,
               numberButtonStyle: numberButtonStyle, 
               numberTextStyle: numberTextStyle, 
@@ -232,12 +301,14 @@ class CalculatorButtons extends StatelessWidget {
               numberButtonStyle: numberButtonStyle, 
               numberTextStyle: numberTextStyle, 
               operationsTextStyle: operationsTextStyle,
+              setOperation: setOperation,
             ),
             const SizedBox(height: 20,),
             FifthRowOfButtons(
               enterNumber: enterNumber,              
               numberButtonStyle: numberButtonStyle, 
               numberTextStyle: numberTextStyle,
+              calculateResult: calculateResult,
             ),
           ],
         ),

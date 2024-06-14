@@ -7,11 +7,13 @@ class FifthRowOfButtons extends StatelessWidget {
     required this.numberButtonStyle,
     required this.numberTextStyle,
     required this.enterNumber,
+    required this.calculateResult,
   });
 
   final ButtonStyle numberButtonStyle;
   final TextStyle numberTextStyle;
   final Function(String) enterNumber;
+  final Function() calculateResult;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,7 @@ class FifthRowOfButtons extends StatelessWidget {
         ),
         const SizedBox(width: 20,),
         ElevatedButton(
-          onPressed: ()=>{}, 
+          onPressed: calculateResult, 
           style: ButtonStyle(
             shape: MaterialStateProperty.all(
               const RoundedRectangleBorder(
@@ -70,12 +72,14 @@ class FourthRowOfButtons extends StatelessWidget {
     required this.numberTextStyle,
     required this.operationsTextStyle,
     required this.enterNumber,
+    required this.setOperation,
   });
   
   final Function(String) enterNumber;
   final ButtonStyle numberButtonStyle;
   final TextStyle numberTextStyle;
   final TextStyle operationsTextStyle;
+  final Function(String) setOperation;
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +111,7 @@ class FourthRowOfButtons extends StatelessWidget {
           ),
         ),
         ElevatedButton(
-          onPressed: ()=>{}, 
+          onPressed: () => setOperation('+'), 
           style: numberButtonStyle, 
           child: Text(
             "+", 
@@ -126,12 +130,14 @@ class ThirdRowOfButtons extends StatelessWidget {
     required this.numberTextStyle,
     required this.operationsTextStyle,
     required this.enterNumber,
+    required this.setOperation,
   });
 
   final ButtonStyle numberButtonStyle;
   final TextStyle numberTextStyle;
   final TextStyle operationsTextStyle;
   final Function(String) enterNumber;
+  final Function(String) setOperation;
 
   @override
   Widget build(BuildContext context) {
@@ -147,7 +153,8 @@ class ThirdRowOfButtons extends StatelessWidget {
           ),
         ),
         ElevatedButton(
-          onPressed: () => enterNumber("5"),           style: numberButtonStyle, 
+          onPressed: () => enterNumber("5"),          
+          style: numberButtonStyle, 
           child: Text(
             "5", 
             style: numberTextStyle,
@@ -162,7 +169,7 @@ class ThirdRowOfButtons extends StatelessWidget {
           ),
         ),
         ElevatedButton(
-          onPressed: ()=>{}, 
+          onPressed: () => setOperation('-'), 
           style: numberButtonStyle, 
           child: Text(
             "–", 
@@ -181,12 +188,14 @@ class SecondRowOfButtons extends StatelessWidget {
     required this.numberTextStyle,
     required this.operationsTextStyle,
     required this.enterNumber,
+    required this.setOperation,
   });
 
   final ButtonStyle numberButtonStyle;
   final TextStyle numberTextStyle;
   final TextStyle operationsTextStyle;
   final Function(String) enterNumber;
+  final Function(String) setOperation;
 
   @override
   Widget build(BuildContext context) {
@@ -218,7 +227,7 @@ class SecondRowOfButtons extends StatelessWidget {
           ),
         ),
         ElevatedButton(
-          onPressed: ()=>{}, 
+          onPressed: ()=>setOperation('*'), 
           style: numberButtonStyle, 
           child: Text("×",
             style: operationsTextStyle,
@@ -232,17 +241,19 @@ class SecondRowOfButtons extends StatelessWidget {
 class FirstRowOfButtons extends StatelessWidget {
   const FirstRowOfButtons({
     super.key,
-    required this.percentResult,
+    required this.percentOperation,
     required this.changeSign,
     required this.clearInput,
     required this.numberButtonStyle,
     required this.numberTextStyle,
     required this.operationsTextStyle,
+    required this.setOperation,
   });
 
-  final Function() percentResult;
+  final Function() percentOperation;
   final Function() changeSign;
   final Function() clearInput;
+  final Function(String) setOperation;
   final ButtonStyle numberButtonStyle;
   final TextStyle numberTextStyle;
   final TextStyle operationsTextStyle;
@@ -279,7 +290,7 @@ class FirstRowOfButtons extends StatelessWidget {
           ),
         ),
         ElevatedButton(
-          onPressed: percentResult, 
+          onPressed: percentOperation, 
           style: numberButtonStyle, 
           child: Text(
             "%", 
@@ -287,7 +298,7 @@ class FirstRowOfButtons extends StatelessWidget {
           ),
         ),
         ElevatedButton(
-          onPressed: ()=>{}, 
+          onPressed: ()=>setOperation('/'), 
           style: numberButtonStyle, 
           child: Text(
             "÷", 
